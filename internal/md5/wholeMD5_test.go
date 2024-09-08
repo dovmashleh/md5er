@@ -22,13 +22,14 @@ func TestAsByteSlice(t *testing.T) {
 		},
 		{
 			name: "utf8 string",
-			mes:  "W need some multibyte string, так что вот немного русских букв, יְהוָֹה шоб помучаться с переходом на левостороннее, да пара 4-байтных смайлов 😈 ⛧ 🤘",
+			mes:  "We need some multibyte string, так что вот немного русских букв, יְהוָֹה шоб помучаться с переходом на левостороннее, да пара 4-байтных смайлов 😈 ⛧ 🤘",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			byteMes := []byte(tt.mes)
-			got := AsByteSlice(byteMes)
+			md5er := New()
+			got := md5er.AsByteSlice(byteMes)
 			h := md5.New()
 			io.WriteString(h, tt.mes)
 			want := h.Sum(nil)
