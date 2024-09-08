@@ -4,8 +4,15 @@ import "encoding/binary"
 
 var InitVector HashVector = HashVector{0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476}
 
+type MD5service struct {
+}
+
+func New() *MD5service {
+	return &MD5service{}
+}
+
 // AsByteArray returns [16]byte as LittleEndian
-func AsByteArray(mes []byte) [16]byte {
+func (s *MD5service) AsByteArray(mes []byte) [16]byte {
 	mes = appendLenAndPad(mes)
 	vector := InitVector
 	for i := 0; i < len(mes); i += 64 {
@@ -17,8 +24,8 @@ func AsByteArray(mes []byte) [16]byte {
 	binary.Encode(result[:], binary.LittleEndian, vector)
 	return result
 }
-func AsByteSlice(mes []byte) []byte {
-	array := AsByteArray(mes)
+func (s *MD5service) AsByteSlice(mes []byte) []byte {
+	array := s.AsByteArray(mes)
 	return array[:]
 }
 func appendLenAndPad(mes []byte) []byte {
