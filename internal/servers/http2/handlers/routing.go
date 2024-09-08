@@ -15,9 +15,9 @@ type Routing struct {
 	Router     *gin.Engine
 }
 
-func NewRouting() *Routing {
+func NewRouting(md5service *md5.MD5service) *Routing {
 	routing := &Routing{
-		Md5service: md5.New(),
+		Md5service: md5service,
 	}
 	routing.makeRouter()
 	return routing

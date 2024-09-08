@@ -1,0 +1,12 @@
+syntax = "proto3";
+package protomd5;
+option go_package = "md5er/api/protomd5";
+service md5er{
+  rpc md5(md5request) returns (md5response){}
+}
+message md5request{
+  bytes data = 1;
+}
+message md5response{
+  bytes hash = 1;
+}

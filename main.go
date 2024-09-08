@@ -3,15 +3,29 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
+	"md5er/internal/servers/http2"
+	"md5er/internal/servers/tcp"
+	"sync"
 
 	"io"
 	mymd5 "md5er/internal/md5"
-	"md5er/internal/servers/tcp"
 )
 
 func main() {
-	server := tcp.New()
-	server.Start()
+	md5service := mymd5.New()
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+	go func() {
+		HttpServer := http2.New(md5service)
+		HttpServer.Start()
+		wg.Done()
+	}()
+	go func() {
+		tcpServer := tcp.New(md5service)
+		tcpServer.Start()
+		wg.Done()
+	}()
+	wg.Wait()
 }
 
 func someTets() {
